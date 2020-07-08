@@ -1,0 +1,410 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <title>Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC:600" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
+
+    @RenderSection("PluginCSS", true)
+
+    <!-- google log -->
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="547525902851-c6178npe4g58kv8k8mn152tg18a4hlko.apps.googleusercontent.com">
+    <link rel="icon" href="/Assets/Customer/cozastore/images/icons/logo-01.png">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <!---------------->
+
+</head>
+<body class="animsition">
+
+    <!-- Header -->
+    <header @RenderSection("PluginClassHeader", false)>
+        <!-- Header desktop -->
+        <div class="container-menu-desktop">
+            <!-- Topbar -->
+            <div class="top-bar">
+                <div class="content-topbar flex-sb-m h-full container">
+                    <div class="left-top-bar">
+                        Miễn phí vận chuyển với hóa đơn trên 500.000 đồng
+                    </div>
+
+                    <div class="right-top-bar flex-w h-full">
+                        <a href="#" class="flex-c-m trans-04 p-lr-25">
+                            Phiếu quà tặng
+                        </a>
+
+                        <a href="#" class="flex-c-m trans-04 p-lr-25">
+                            Ưu đãi đối tác
+                        </a>
+
+                        <a href="#" class="flex-c-m trans-04 p-lr-25">
+                            Hỗ trợ khách hàng
+                        </a>
+
+                        <a href="@Url.Action("Login","AccountsMerchant",new { area="MerchantArea"})" class="flex-c-m trans-04 p-lr-25" style="background-color:whitesmoke;color:black;font-size:15px">
+                            Kênh người bán
+                        </a>
+                        <a href="@Url.Action("Register","AccountsMerchant",new { area="MerchantArea"})" class="flex-c-m trans-04 p-lr-25" style="background-color:whitesmoke;color:black;font-size:15px">
+                            || Đăng ký làm người bán
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wrap-menu-desktop">
+                <nav class="limiter-menu-desktop container">
+
+                    <!-- Logo desktop -->
+                    <a href="@Url.Action("Index","Home")" class="logo">
+                        <img src="/Assets/Customer/cozastore/images/icons/logo-01.png" alt="IMG-LOGO">
+                    </a>
+
+                    <!-- Menu desktop -->
+                    <div class="menu-desktop">
+                        @{Html.RenderAction("TopbarTypeBookDisplay", "Layout");}
+                        
+                    </div>
+
+                    <!-- Icon header -->
+                    <div class="wrap-icon-header flex-w flex-r-m">
+                        <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
+                            <i class="zmdi zmdi-search"></i>
+                        </div>
+
+                        
+                        @{Html.RenderAction("CartIconDisplay", "Layout");}
+
+                        <!-- Sub menu guest -->
+                        @{Html.RenderAction("TopbarUserDisplay", "Layout");}
+
+
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Modal Search -->
+        <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
+            <div class="container-search-header">
+                <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
+                    <img src="/Assets/Customer/cozastore/images/icons/icon-close2.png" alt="CLOSE">
+                </button>
+
+                @using (Html.BeginForm("Index","ListBooks",null,FormMethod.Post,new { @class= "wrap-search-header flex-w p-l-15" }))
+                {
+                    <button class="flex-c-m trans-04">
+                        <i class="zmdi zmdi-search"></i>
+                    </button>
+                    <input class="plh3" type="text" name="SearchString" placeholder="Nhập từ khóa tìm kiếm...">
+                }
+
+            </div>
+        </div>
+
+        @*<!-- Modal -->
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content" style=" display: inherit;">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Đăng nhập và tạo tài khoản</h4>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#login">Đăng nhập</a></li>
+                                <li><a data-toggle="tab" href="#register">Tạo tài khoản</a></li>
+                            </ul>
+                        </div>
+                        <div class="tab-content">
+                            <div id="login" class="tab-pane fade in active col-md-12">
+                                <h3>Đăng nhập</h3>
+                                <form action="#">
+                                    <div class="form-group ">
+                                        <label for="email">Email:</label>
+                                        <input type="email" class="form-control" id="email" placeholder="Nhập email" name="email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pwd">Mật khẩu:</label>
+                                        <input type="password" class="form-control" id="pwd" placeholder="Nhập mật khẩu" name="pswd">
+                                    </div>
+                                    <div class="form-group form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" name="remember"> Nhớ tài khoản
+                                        </label>
+                                        <a href="#">Quên mật khẩu?</a>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Đăng nhập</button>
+                                </form>
+                            </div>
+                            <div id="register" class="tab-pane fade col-md-12">
+                                <h3>Tạo tài khoản</h3>
+                                <form action="#">
+                                    <div class="form-group">
+                                        <label for="username">Họ và tên:</label>
+                                        <input type="text" class="form-control" id="username" placeholder="Họ và tên" name="username">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="email">Email:</label>
+                                        <input type="email" class="form-control" id="email" placeholder="Nhập email" name="email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pwd">Mật khẩu:</label>
+                                        <input type="password" class="form-control" id="pwd" placeholder="Nhập mật khẩu" name="pswd">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirmpwd">Nhập lại mật khẩu:</label>
+                                        <input type="password" class="form-control" id="confirmpwd" placeholder="Nhập lại mật khẩu" name="confirmpwd">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirmpwd">Số điện thoại:</label>
+                                        <input type="password" class="form-control" id="confirmpwd" placeholder="Số điện thoại" name="sdt">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="address">Địa chỉ:</label>
+                                        <input type="text" class="form-control" id="address" placeholder="Địa chỉ" name="address">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Tạo tài khoản</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>*@
+
+    </header>
+    <!-- Cart -->
+    @{Html.RenderAction("CartModalDisplay", "Layout");}
+
+    @RenderBody();
+
+
+    <!-- Footer -->
+    <footer class="bg3 p-t-75 p-b-32">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-lg-3 p-b-50">
+                    <h4 class="stext-301 cl0 p-b-30">
+                        Hổ trợ khách hàng
+                    </h4>
+
+                    <ul>
+                        <li class="p-b-10">
+                            <a style="color: yellow">
+                                Hotline đặt hàng: 1800 6588
+                            </a><br>
+                            <a style="color: #fff">(Miễn phí, 8h - 21h kể cả T7, CN)</a>
+                        </li>
+
+                        <li class="p-b-10">
+                            <a href="@Url.Action("ChinhSachNguoiDung","Home")" class="stext-107 cl7 hov-cl1 trans-04">
+                                Chính sách người dùng
+                            </a>
+                        </li>
+
+                        <li class="p-b-10">
+                            <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                                Phương thức vận chuyển
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-sm-6 col-lg-3 p-b-50">
+                    <h4 class="stext-301 cl0 p-b-30">
+                        Về chúng tôi
+                    </h4>
+
+                    <ul>
+                        <li class="p-b-10">
+                            <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                                Giới thiệu
+                            </a>
+                        </li>
+
+                        <li class="p-b-10">
+                            <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                                Tuyển dụng
+                            </a>
+                        </li>
+
+                        <li class="p-b-10">
+                            <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                                Ưu đãi doanh nghiệp
+                            </a>
+                        </li>
+
+                        <li class="p-b-10">
+                            <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                                KIP tư vấn
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-sm-6 col-lg-3 p-b-50">
+                    <h4 class="stext-301 cl0 p-b-30">
+                        Địa chỉ gửi hàng đổi/trả/bảo hành:
+                    </h4>
+
+                    <p class="stext-107 cl7 size-201">
+                        Trung tâm xử lý đơn hàng - số 4 Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh. (Tham khảo chính sách đổi trả hoặc liên hệ: 18006588 để được hướng dẫn thêm.)
+                    </p>
+
+                    <div class="p-t-27">
+                        <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+
+                        <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+                            <i class="fa fa-google-plus"></i>
+                        </a>
+
+                        <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+                            <i class="fa fa-instagram"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-3 p-b-50">
+                    <h4 class="stext-301 cl0 p-b-30">
+                        Đăng ký nhận bản tin
+                    </h4>
+                    <p class="stext-107 cl7 size-201" style="color: yellow">
+                        Đừng bỏ lỡ hàng ngàn sản phẩm và chương trình siêu hấp dẫn
+                    </p>
+
+                    <form>
+                        <div class="wrap-input1 w-full p-b-4">
+                            <input class="input1 bg-none plh1 stext-107 cl7" type="text" name="email" placeholder="Địa chỉ email của bạn">
+                            <div class="focus-input1 trans-04"></div>
+                        </div>
+
+                        <div class="p-t-18">
+                            <button class="flex-c-m stext-101 cl0 size-103 bg1 bor1 hov-btn2 p-lr-15 trans-04">
+                                Đăng ký
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="p-t-40">
+                <div class="flex-c-m flex-w p-b-18">
+                    <a href="#" class="m-all-1">
+                        <img src="/Assets/Customer/cozastore/images/icons/icon-pay-01.png" alt="ICON-PAY">
+                    </a>
+
+                    <a href="#" class="m-all-1">
+                        <img src="/Assets/Customer/cozastore/images/icons/icon-pay-02.png" alt="ICON-PAY">
+                    </a>
+
+                    <a href="#" class="m-all-1">
+                        <img src="/Assets/Customer/cozastore/images/icons/icon-pay-03.png" alt="ICON-PAY">
+                    </a>
+
+                    <a href="#" class="m-all-1">
+                        <img src="/Assets/Customer/cozastore/images/icons/icon-pay-04.png" alt="ICON-PAY">
+                    </a>
+
+                    <a href="#" class="m-all-1">
+                        <img src="/Assets/Customer/cozastore/images/icons/icon-pay-05.png" alt="ICON-PAY">
+                    </a>
+                </div>
+
+                <p class="stext-107 cl6 txt-center">
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Copyright &copy;
+                    <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="/Assets/Customer/cozastore/https://colorlib.com" target="_blank">Colorlib</a>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+
+                </p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Back to top -->
+    <div class="btn-back-to-top" id="myBtn">
+        <span class="symbol-btn-back-to-top">
+            <i class="zmdi zmdi-chevron-up"></i>
+        </span>
+    </div>
+
+    @RenderSection("ModalProduct",false)
+    @RenderSection("PluginJS", true)
+
+    <script>
+        function onSignIn(googleUser) {
+            // Useful data for your client-side scripts:
+            var profile = googleUser.getBasicProfile();
+            console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+            console.log('Full Name: ' + profile.getName());
+            console.log('Given Name: ' + profile.getGivenName());
+            console.log('Family Name: ' + profile.getFamilyName());
+            console.log("Image URL: " + profile.getImageUrl());
+            console.log("Email: " + profile.getEmail());
+
+            // The ID token you need to pass to your backend:
+            var id_token = googleUser.getAuthResponse().id_token;
+            console.log("ID Token: " + id_token);
+
+            var googleAC = [];
+            googleAC.push({
+                AccountId: profile.getId(),
+                FullName: profile.getName(),
+                Email: profile.getEmail(),
+                IdToken: googleUser.getAuthResponse().id_token
+            });
+            $.ajax({
+                url: 'Accounts/LoginGoogle',
+                data: { googleACModel: JSON.stringify(googleAC) },
+                dataType: 'json',
+                type: 'POST',
+                success: function (data) {
+                    if (data.status == true) {
+                        if (data.valueTrangThai == true) {
+                            alert('Login Google');
+                            window.location.href = "/";
+                        }
+                        else {
+                            alert('Login By Google');
+                            window.location.href = "/Accounts/AdditionalInfoGg/" + data.id;
+                        }
+                        
+                    }
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function onLoad() {
+            gapi.load('auth2', function () {
+                gapi.auth2.init();
+            });
+        }
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('User signed out.');
+            });
+        }
+
+        
+    </script>
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+
+</body>
+</html>

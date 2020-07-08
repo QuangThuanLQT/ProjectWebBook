@@ -1,0 +1,161 @@
+﻿@model PagedList.IPagedList<Model.EntityFramework.Sach>
+@using PagedList.Mvc;
+@using Common
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/MerchantArea/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="col-lg-4 col-md-5">
+    <aside class="profile-nav alt">
+        <section class="card">
+            <div class="card-header user-header alt bg-dark">
+                <div class="media">
+                    <a href="/Assets/Merchant/UI/#">
+                        <img class="align-self-center rounded-circle mr-3" style="width:85px; height:85px;" alt="" src="~/Assets/Image/Merchant/@(ViewBag.MerchantID).jpg">
+                    </a>
+                    <div class="media-body">
+                        <h2 class="text-light display-6">Shop @ViewBag.TenShop</h2>
+                        <p class="text-light">Quản lý: @ViewBag.TenChu</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <a>Hoạt động <span class="badge badge-primary pull-right">@ViewBag.SoThang tháng</span></a>
+                </li>
+                <li class="list-group-item">
+                    <a>Số sản phẩm: <span class="badge badge-primary pull-right">@ViewBag.SoSanPham </span></a>
+                </li>
+                <li class="list-group-item">
+                    <a href="/Assets/Merchant/UI/#" data-toggle="modal" data-target="#exampleModal" style="color: inherit;">Cài đặt thông tin</a>
+                </li>
+            </ul>
+
+        </section>
+    </aside>
+</div>
+<div class="col-lg-8 col-md-12">
+    <div class="card">
+        <div class="card-body">
+            <div class="default-tab">
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="/Assets/Merchant/UI/#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Tất cả</a>
+                    </div>
+                </nav>
+                <div class="tab-content pl-3 pt-2" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-lg-6 col-md-6">
+                                <div class="media">
+                                    <a href="#">
+                                        <img class="align-self-center mr-3" style="width:85px; height:85px;" alt="" src="@HtmlHelperExtensions.ImageBookOrDefault(@item.SachID,1)">
+                                    </a>
+                                    <div class="media-body">
+                                        <h5 class="text-input display-6">@item.TenSach</h5>
+                                        @if (item.GiaKhuyenMai == null)
+                                        {
+                                            <p style="color: red">
+                                                @item.GiaTien.ToString("N0") đồng
+                                            </p>
+                                            <p>
+                                                Giảm: ----
+                                            </p>
+                                        }
+                                        else
+                                        {
+                                            <p style="color: red">
+                                                Giá: @item.GiaKhuyenMai.GetValueOrDefault(0).ToString("N0") - @item.GiaTien.ToString("N0") đồng
+                                            </p>
+                                            <p>
+                                                Giảm:@HtmlHelperExtensions.ConvertDecimaltoIntegerSalePrice(item.GiaKhuyenMai.GetValueOrDefault(0), item.GiaTien)%
+                                            </p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    <br />
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page,id=ViewBag.TypeID }))
+</div>
+<!-- /# column -->
+<!-- Modal thông tin-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="top: 70px">
+    <div class="modal-dialog" role="document" style="width: 450px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Chỉnh sửa thông tin</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("Index", "MCHome", null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+            {
+                <div class="modal-body">
+
+
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="text-input" class=" form-control-label">Name</label></div>
+                        <div class="col-12 col-md-9"><input type="text" id="name" name="name" placeholder="" class="form-control"></div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col col-md-3"><label for="text-input" class=" form-control-label">Đổi ảnh</label></div>
+                        <div class="col-12 col-md-9">
+                            <input type="file" id="image" name="image" class="form-control" style="padding: 3px">
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-info btn-sm">Xác nhận</button>
+                </div>
+            }
+            </div>
+    </div>
+</div>
+
+@section PluginCSS{
+    <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="/Assets/Merchant/UI/vendors/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Assets/Merchant/UI/vendors/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/Assets/Merchant/UI/vendors/themify-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="/Assets/Merchant/UI/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="/Assets/Merchant/UI/vendors/selectFX/css/cs-skin-elastic.css">
+
+    <link rel="stylesheet" href="/Assets/Merchant/UI/assets/css/style.css">
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+}
+
+@section PLuginJS{
+    <script src="/Assets/Merchant/UI/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="/Assets/Merchant/UI/vendors/popper.js/dist/umd/popper.min.js"></script>
+    <script src="/Assets/Merchant/UI/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/Assets/Merchant/UI/assets/js/main.js"></script>
+
+    <!--  Chart js -->
+    <script src="/Assets/Merchant/UI/vendors/chart.js/dist/Chart.bundle.min.js"></script>
+    <script src="/Assets/Merchant/UI/assets/js/widgets.js"></script>
+}
+
